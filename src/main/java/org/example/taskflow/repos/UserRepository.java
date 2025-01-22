@@ -1,10 +1,9 @@
-package org.example.taskflow.user;
+package org.example.taskflow.repos;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.example.taskflow.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 

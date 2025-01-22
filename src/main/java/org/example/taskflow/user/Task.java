@@ -3,8 +3,9 @@ package org.example.taskflow.user;
 import jakarta.persistence.*;
 
 @Entity
-@Table(schema = "tasks")
+@Table(name = "tasks")
 public class Task {
+    
     private Long userId;
     private String content;
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
