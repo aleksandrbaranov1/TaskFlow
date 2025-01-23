@@ -1,7 +1,10 @@
 package org.example.taskflow.controllers;
 
+import org.example.taskflow.repos.TaskRepository;
 import org.example.taskflow.repos.UserRepository;
+import org.example.taskflow.service.TaskService;
 import org.example.taskflow.service.UserService;
+import org.example.taskflow.user.Task;
 import org.example.taskflow.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,17 +17,23 @@ import java.util.List;
 @RestController
 public class UserController {
     private final UserService userService;
-    private final UserRepository userRepository;
+    private final TaskService taskService;
 
     @Autowired
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService, TaskService taskService) {
         this.userService = userService;
-        this.userRepository = userRepository;
+        this.taskService = taskService;
     }
-    @RequestMapping
+
+    @RequestMapping("/allTasks")
+    public List<Task> getAllTasks() {
+        return taskService.getAllTasks();
+    }
+    @RequestMapping("allUsers")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }
+
     @GetMapping("/{id}/birthdate")
     public ResponseEntity<LocalDate> getUserBirthdate(@PathVariable Long id) {
         LocalDate userBirthday = userService.getUserBirthdayById(id);

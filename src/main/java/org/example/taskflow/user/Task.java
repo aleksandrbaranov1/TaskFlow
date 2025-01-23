@@ -5,29 +5,42 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "tasks")
 public class Task {
-    
-    private Long userId;
+
     private String content;
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    public Task(Long userId, String content, Long id) {
-        this.userId = userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="user_id")
+    private User user;
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    @Version
+    private Integer version;
+
+    public Task(String content, Long id) {
         this.content = content;
         this.id = id;
     }
 
-
     public Task() {
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
+
 
     public String getContent() {
         return content;
