@@ -4,10 +4,12 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
@@ -19,6 +21,10 @@ public class User {
     @Version
     private Integer version;
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Task> tasks;
+
+
     public User(Long id, String name, LocalDate birthday, String email, String password) {
         this.id = id;
         this.name = name;
@@ -29,6 +35,14 @@ public class User {
 
     public User() {
 
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public Long getId() {
