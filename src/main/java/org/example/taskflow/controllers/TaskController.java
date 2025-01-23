@@ -10,6 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+import static org.springframework.aot.hint.TypeReference.listOf;
+
 @RestController
 public class TaskController {
     private final TaskService taskService;
@@ -29,7 +33,7 @@ public class TaskController {
         User user = userService.getUserById(userId);
         if(user == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("User with ID" + userId+ "not found");
+                    .body(String.format("User with ID %s not found", userId));
         }
         Task task = new Task();
         task.setContent(content);
@@ -41,7 +45,17 @@ public class TaskController {
     // /user/{userId}/tasks - все таски пользователя
     // /user/{userId}/tasks/{taskId} - определенная таска определенного пользователя
 
-//    @GetMapping("/user/{userId}/tasks")
-//    public ResponseEntity<List<Task>>
-
+    @GetMapping("/user/{userId}/tasks")
+    public ResponseEntity<?> getAllUserTasks(@PathVariable Long userId) {
+        User user = userService.getUserById(userId);
+        if(user == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(String.format("User with ID %s not found", userId));
+        }
+        List<String> userTask = taskService.getTasksByUserId(userId);
+        if(userTask == null) {
+            return ResponseEntity.ok(String.format("Tasks of user with %s not found", userId));
+        }
+        return ResponseEntity.ok(taskService.getTasksByUserId(userId));
+    }
 }
